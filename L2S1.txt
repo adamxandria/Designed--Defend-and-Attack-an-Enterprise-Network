@@ -1,0 +1,470 @@
+Building configuration...
+
+Current configuration : 12689 bytes
+!
+! Last configuration change at 09:31:52 GMT Wed Jan 19 2000 by teamsum
+! NVRAM config last updated at 01:16:23 GMT Wed Jan 19 2000 by teamsum
+!
+version 15.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname L2S1
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 $1$56RI$OWw9i99aGlPKHD8WdYqNH/
+enable password teamsum0
+!
+username teamsum privilege 15 secret 5 $1$UI2W$aAxu3zLpc2.246w8Elo2X.
+aaa new-model
+!
+!         
+aaa group server tacacs+ TACACS-SVR
+ server-private 192.168.1.99 key j0Nc33naAa
+ ip tacacs source-interface Fddi0
+!
+aaa authentication login default group TACACS-SVR local
+!
+!
+!
+!
+!
+!
+aaa session-id common
+clock timezone GMT 8 0
+switch 1 provision ws-c2960x-24ts-l
+no ip source-route
+no ip gratuitous-arps
+ip dhcp relay information trust-all
+!
+!
+ip dhcp snooping vlan 10,20,30,40
+ip dhcp snooping
+login block-for 180 attempts 10 within 10
+login quiet-mode access-class 2
+login on-failure log
+login on-success log
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-1156449024
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1156449024
+ revocation-check none
+ rsakeypair TP-self-signed-1156449024
+!
+!
+crypto pki certificate chain TP-self-signed-1156449024
+ certificate self-signed 01
+  3082022B 30820194 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 31313536 34343930 3234301E 170D3030 30313131 30363431 
+  30305A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D31 31353634 
+  34393032 3430819F 300D0609 2A864886 F70D0101 01050003 818D0030 81890281 
+  81008E12 942787F4 3876229F 9C3B9DDC A3BF40FD 64C344AF 0891FD8E 30AFCE99 
+  185E472B 59F149A5 0791AFAF B3849F53 18301376 7352A6C4 B97550C0 134BE48C 
+  CB29197E E5401507 19A027FF DF5ED303 312557F7 FFBD935E 5D21A10D E36E5166 
+  AD6FC608 0262DF76 314C18DB 7F91F037 4436EC5E CD4DBE91 4043DB3F 08CC779F 
+  E0F70203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 301F0603 
+  551D2304 18301680 14DD8092 5D864F40 D721D14D 21F312E4 88A0D189 EF301D06 
+  03551D0E 04160414 DD80925D 864F40D7 21D14D21 F312E488 A0D189EF 300D0609 
+  2A864886 F70D0101 05050003 8181008D 6147881D AD7C42FA 43BE1D7F 3C5A47CE 
+  6E43B73C A6B473EA 8CB1315F 5B193992 C0D31D69 F4A22652 38131CA5 2EC54144 
+  C78AB814 CE3509C0 32FD0642 655FDA17 1654E709 CAE372B9 DA2C1EBD 99A63B29 
+  671AEF9A 70B9EAA6 B925E0E7 A46084C6 C10CBF46 2269A55E B26A6C4C 09E1035B 
+  0B13205B 4B0CE861 A6CB300A AAC2D9
+  	quit
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+vlan internal allocation policy ascending
+no cdp run
+!         
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+interface FastEthernet0
+ ip address 192.168.1.105 255.255.255.240
+!
+interface GigabitEthernet1/0/1
+ switchport trunk allowed vlan 10,20,30,40
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ ip dhcp snooping trust
+!
+interface GigabitEthernet1/0/2
+ switchport trunk allowed vlan 10,20,30,40
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ ip dhcp snooping trust
+!
+interface GigabitEthernet1/0/3
+ description <<< KIOSK >>>
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky b445.06ae.3897
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/4
+ description <<< KIOSK >>>
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/5
+ description <<< KIOSK >>>
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/6
+ description <<< KIOSK >>>
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/7
+ description <<< KIOSK >>>
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/8
+ description <<< KIOSK >>>
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/9
+ description <<< KIOSK >>>
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/10
+ description <<< Facilities - Unrestricted >>>
+ switchport access vlan 20
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/11
+ description <<< Facilities - Unrestricted >>>
+ switchport access vlan 20
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky b445.06ae.3897
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/12
+ description <<< Facilities - Unrestricted >>>
+ switchport access vlan 20
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/13
+ description <<< Facilities - Unrestricted >>>
+ switchport access vlan 30
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/14
+ description <<< Facilities - Restricted >>>
+ switchport access vlan 30
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/15
+ description <<< Facilities - Restricted >>>
+ switchport access vlan 30
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/16
+ description <<< Facilities - Restricted >>>
+ switchport access vlan 30
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/17
+ description <<< Facilities - Restricted >>>
+ switchport access vlan 30
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/18
+ description <<< Facilities - Restricted >>>
+ switchport access vlan 30
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/19
+ description <<< Facilities - Restricted >>>
+ switchport access vlan 30
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/20
+ description <<< Facilities - Restricted >>>
+ switchport access vlan 30
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/21
+ description <<< Facilities - Restricted >>>
+ switchport access vlan 30
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!         
+interface GigabitEthernet1/0/22
+ description <<< Facilities - Restricted >>>
+ switchport access vlan 40
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/23
+ description <<< IT Dept >>> 
+ switchport access vlan 40
+ switchport mode access
+ switchport nonegotiate
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip verify source port-security
+ ip dhcp snooping limit rate 5
+!
+interface GigabitEthernet1/0/24
+ switchport access vlan 100
+ switchport mode access
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ switchport port-security
+ shutdown
+!
+interface GigabitEthernet1/0/25
+ switchport access vlan 100
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface GigabitEthernet1/0/26
+ switchport access vlan 100
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ shutdown
+!         
+interface GigabitEthernet1/0/27
+ switchport access vlan 100
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface GigabitEthernet1/0/28
+ switchport access vlan 100
+ switchport port-security violation  protect
+ switchport port-security mac-address sticky
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan10
+ no ip address
+!
+interface Vlan40
+ no ip address
+!
+ip default-gateway 192.168.1.102
+ip http server
+ip http secure-server
+!
+!
+ip access-list standard ADMIN
+ permit any
+logging trap debugging
+logging origin-id hostname
+logging source-interface FastEthernet0
+logging host 192.168.1.99
+snmp-server group admin v3 priv 
+snmp-server view SNMP-RW iso included
+snmp-server host 192.168.1.99 version 3 priv USER1
+!
+!
+!
+!
+!
+line con 0
+line vty 0 4
+ transport input ssh
+line vty 5 15
+ transport input ssh
+!
+ntp authentication-key 1 md5 0511070124474606 7
+ntp authenticate
+ntp trusted-key 1
+ntp server 192.168.1.121 key 1
+end
+
+

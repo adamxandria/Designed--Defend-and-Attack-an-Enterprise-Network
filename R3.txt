@@ -1,0 +1,178 @@
+Building configuration...
+
+
+Current configuration : 2876 bytes
+!
+! Last configuration change at 20:25:24 UTC Thu Nov 16 2023
+!
+version 16.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+!
+hostname DHCPServer
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+vrf definition Mgmt-vrf
+ !
+ address-family ipv4
+ exit-address-family
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+ip domain name teamsum.sitict.net
+ip dhcp excluded-address 192.168.1.33
+ip dhcp excluded-address 192.168.1.1
+ip dhcp excluded-address 192.168.1.97
+ip dhcp excluded-address 192.168.1.81
+ip dhcp excluded-address 192.168.1.64
+ip dhcp excluded-address 192.168.1.80
+ip dhcp excluded-address 192.168.1.69
+ip dhcp excluded-address 192.168.1.26
+ip dhcp excluded-address 192.168.1.27
+ip dhcp excluded-address 192.168.1.28
+ip dhcp excluded-address 192.168.1.113
+ip dhcp excluded-address 192.168.1.114
+ip dhcp excluded-address 192.168.1.115
+ip dhcp excluded-address 192.168.1.34
+ip dhcp excluded-address 192.168.1.35
+ip dhcp excluded-address 192.168.1.82
+ip dhcp excluded-address 192.168.1.83
+ip dhcp excluded-address 192.168.1.2
+ip dhcp excluded-address 192.168.1.3
+ip dhcp excluded-address 192.168.1.99
+!
+ip dhcp pool Vlan10Pool
+ network 192.168.1.32 255.255.255.224
+ default-router 192.168.1.33
+!
+ip dhcp pool Vlan20Pool
+ network 192.168.1.80 255.255.255.240
+ default-router 192.168.1.83
+!
+ip dhcp pool Vlan30Pool
+ network 192.168.1.0 255.255.255.224
+ default-router 192.168.1.3
+!
+ip dhcp pool Vlan40Pool
+ network 192.168.1.112 255.255.255.248
+ default-router 192.168.1.115
+!
+!
+!
+login on-success log
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+license udi pid ISR4321/K9 sn FDO23440ZEY
+license boot level appxk9
+no license smart enable
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+!
+!
+username teamsum secret 5 $1$7Qp0$jb5Gtuz8Xvjqs11S2aEHd1
+!
+redundancy
+ mode none
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ ip address 192.168.1.137 255.255.255.252
+ negotiation auto
+!
+interface GigabitEthernet0/0/1
+ ip address 192.168.1.141 255.255.255.252
+ negotiation auto
+!
+interface GigabitEthernet0/1/0
+ no ip address
+ negotiation auto
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ ip address 192.168.1.100 255.255.255.240
+ negotiation auto
+!
+router ospf 1
+ network 192.168.1.136 0.0.0.3 area 0
+ network 192.168.1.140 0.0.0.3 area 0
+!
+ip forward-protocol nd
+no ip http server
+ip http secure-server
+ip tftp source-interface GigabitEthernet0
+!
+ip ssh version 2
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ transport input none
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login local
+ transport input ssh
+line vty 5 15
+ login local
+ transport input ssh
+!
+!
+!
+!
+!
+!
+end
